@@ -2,7 +2,7 @@
 from rest_framework.permissions import BasePermission
 
 # Create your custom permissions here
-class IsAuthenticatedAndInAdminGroup(BasePermission):
+class IsAuthenticatedAndAdmin(BasePermission):
     """
     Allows access only to authenticated users who are in the ADMIN group.
     """
@@ -12,7 +12,7 @@ class IsAuthenticatedAndInAdminGroup(BasePermission):
             return False
         
         # Check if the user is in the ADMIN group
-        return request.user.groups.filter(name='ADMIN').exists()
+        return request.user.is_superuser
     
 
 class IsAuthenticatedAndInUserGroup(BasePermission):

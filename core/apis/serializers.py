@@ -11,7 +11,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
 # Local imports
-from core.models import CustomUser, AdminUsers
+from core.models import CustomUser, AdminUsers, Professionals, ProReview
 
 # Create your serializers here
 
@@ -50,3 +50,154 @@ class AdminLoginSerializer(serializers.Serializer):
         }
 
         return tokens
+    
+
+class AdminLogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField(write_only=True)
+
+    def save(self):
+        # Attempt to blacklist the refresh token to log out the user
+        try:
+            RefreshToken(self.validated_data['refresh']).blacklist()
+        except Exception as e:
+            raise serializers.ValidationError({"refresh": str(e)})
+        
+        return
+    
+
+# ACCOUNTSETTINGS SERIALIZERS
+class AccountSettingsRetrieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdminUsers
+        fields = ["first_name", "last_name", "email", "phone_no", "designation", "image"]
+
+
+class AccountSettingsUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdminUsers
+        fields = ["first_name", "last_name", "email", "phone_no", "designation"]
+
+        extra_kwargs = {
+            'phone_no': {'required': True, 'allow_blank': False, 'allow_null': False},
+            'designation': {'required': True, 'allow_blank': False, 'allow_null': False}
+        }
+
+
+class AccountSettingsProfilePictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdminUsers
+        fields = ["image"]
+    
+        extra_kwargs = {
+            'image': {'required': True, 'allow_null': False}
+        }
+
+
+class AdminChangePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True)
+    confirm_password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        user = self.context['request'].user
+
+        current_password = data.get('current_password')
+        new_password = data.get('new_password')
+        confirm_password = data.get('confirm_password')
+
+        # Check if the current password is correct
+        if not user.check_password(current_password):
+            raise serializers.ValidationError({'current_password': 'Wrong password'})
+        
+        # Check if new password and confirm password match
+        if new_password != confirm_password:
+            raise serializers.ValidationError({'confirm_password': 'Passwords mismatch'})
+        
+        # Validate the new password
+        try:
+            validate_password(new_password, user=user)
+        except ValidationError as e:
+            raise serializers.ValidationError({'new_password': e.messages})
+        
+        return data
+    
+    def save(self):
+        user = self.context['request'].user
+        new_password = self.validated_data['new_password']
+        user.set_password(new_password)
+        user.save()
+        return user
+    
+
+# PROFESSIONALS MODULE SERIALIZERS
+class ProfessionalsCreateRetrieveSerializer(serializers.ModelSerializer):
+    review = serializers.CharField(write_only=True)
+    rating = serializers.IntegerField(write_only=True)
+
+    class Meta:
+        model = Professionals
+        fields = ['name', 'phone_no', 'email', 'expertise', 'location', 'about', 'experiance', 'portfolio', 'review', 'rating', 'banner', 'website']
+
+    def create(self, validated_data):
+        review = validated_data.pop('review')
+        rating = validated_data.pop('rating')
+        request = self.context.get('request')
+
+        # Roll back if any error occurs
+        with transaction.atomic():
+            professional = Professionals.objects.create(**validated_data)
+            ProReview.objects.create(professional=professional, review=review, rating=rating, created_by=request.user)
+
+        return professional
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        id = self.context.get("id")
+        admin_review = get_object_or_404(ProReview, professional_id=id, created_by__is_superuser=True)
+
+        representation['review'] = admin_review.review
+        representation['rating'] = admin_review.rating
+
+        return representation
+    
+
+class ProfessionalsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Professionals
+        fields = ['id', 'name', 'phone_no', 'email', 'expertise', 'location']
+
+
+class ProfessionalsDeleteSerializer(serializers.Serializer):
+    ids = serializers.ListField(child=serializers.IntegerField())
+
+
+class ProfessionalsUpdateSerializer(serializers.ModelSerializer):
+    review = serializers.CharField(write_only=True)
+    rating = serializers.IntegerField(write_only=True)
+
+    class Meta:
+        model = Professionals
+        fields = ['name', 'phone_no', 'email', 'expertise', 'location', 'about', 'experiance', 'portfolio', 'review', 'rating', 'banner', 'website']
+
+        extra_kwargs ={
+            "website": {"required": True}
+        }
+
+    def update(self, instance, validated_data):
+        id = self.context.get("id")
+        review_data = validated_data.pop('review', None)
+        rating_data = validated_data.pop('rating', None)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        admin_review = get_object_or_404(ProReview, professional_id=id, created_by__is_superuser=True)
+        admin_review.review = review_data
+        admin_review.rating = rating_data
+
+        with transaction.atomic():
+            instance.save()
+            admin_review.save()
+
+        return instance
