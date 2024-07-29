@@ -11,7 +11,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
 # Local imports
-from core.models import Books, CustomUser, AdminUsers, Events, Materials, MobileUsers, Professionals, ProReview
+from core.models import Books, CustomUser, AdminUsers, Events, Materials, MobileUsers, Notifications, Professionals, ProReview, Transactions
 
 # Create your serializers here
 
@@ -250,7 +250,8 @@ class EventsRetrieveUpdateSerializer(serializers.ModelSerializer):
             "additional_informations": {"required": True}
         }
 
-# MATERIALS MODULE SERIALIZERS
+
+# MATERIALS MODULE SERIALIZERS *******
 class MaterialsCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Materials
@@ -280,10 +281,27 @@ class MaterialsRetrieveUpdateSerializer(serializers.ModelSerializer):
 
 
 # USERS MODULE SERIALIZERS
-class UserListSerializer(serializers.ModelSerializer):
+class UsersListSerializer(serializers.ModelSerializer):
     class Meta:
         model = MobileUsers
         fields = ["id", "first_name", "email", "phone_no", "created_on", "is_active"]
+
+
+class UsersListCheckSerializer(serializers.Serializer):
+    status = serializers.BooleanField(required=False, allow_null=True)
+    search = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    from_date = serializers.DateTimeField(required=False, allow_null=True)
+    to_date = serializers.DateTimeField(required=False, allow_null=True)
+
+    def validate(self, attrs):
+        from_date = attrs.get("from_date")
+        to_date = attrs.get("to_date")
+
+        if from_date or to_date:
+            if not from_date or not to_date:
+                raise serializers.ValidationError("both 'from_date' and 'to_date' is required")
+        
+        return attrs
 
 
 class UsersMultipleDeleteSerializer(serializers.Serializer):
@@ -299,6 +317,7 @@ class UsersRetrieveUpdateSerializer(serializers.ModelSerializer):
             'phone_no': {'required': True, 'allow_blank': False, 'allow_null': False},
         }
 
+
 class UsersProfilePictureSerializer(serializers.ModelSerializer):
     class Meta:
         model = MobileUsers
@@ -307,3 +326,131 @@ class UsersProfilePictureSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'image': {'required': True, 'allow_null': False}
         }
+
+
+# TRANSACTIONS MODULE SERIALIZERS *******
+class TransactionsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transactions
+        fields = ["id", "date_time", "user_involved", "type", "amount", "status"]
+
+
+class TransactionsListCheckSerializer(serializers.Serializer):
+    type = serializers.BooleanField(required=False, allow_null=True)
+    search = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    from_date = serializers.DateTimeField(required=False, allow_null=True)
+    to_date = serializers.DateTimeField(required=False, allow_null=True)
+
+    def validate(self, attrs):
+        from_date = attrs.get("from_date")
+        to_date = attrs.get("to_date")
+
+        if from_date or to_date:
+            if not from_date or not to_date:
+                raise serializers.ValidationError("both 'from_date' and 'to_date' is required")
+            
+        return attrs
+
+class TransactionsCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transactions
+        fields = "__all__"
+
+
+class TransactionsMarkAsCompletedSerializer(serializers.Serializer):
+    ids = serializers.ListField(child=serializers.IntegerField())
+
+
+# DASHBOARD SERIALIZERS *******
+class  ProfessionalsGrowthChartSerializer(serializers.Serializer):
+    months = serializers.IntegerField(
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(12)
+        ]
+    )
+
+
+class RevenueGrowthSerializer(serializers.Serializer):
+    PERIODS_CHOICES = [('weekly', 'Weekly'), ('monthly', 'Monthly'), ('yearly', 'Yearly')]
+    periods = serializers.ChoiceField(choices=PERIODS_CHOICES)
+
+
+class ProfessionalsActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Professionals
+        fields = '__all__'
+    
+    
+class BooksActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Books
+        fields = "__all__"
+
+    
+class MaterialsActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Materials
+        fields = "__all__"
+
+    
+class EventsActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Events
+        fields = "__all__"
+
+
+class MobileUsersActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MobileUsers
+        exclude = ['user', 'is_active']
+
+
+class NotificationsCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notifications
+        fields = ["title", "recipient", "status", "body", "image"]
+
+        extra_kwargs = {
+            "status": {"required": True}
+        }
+
+
+# NOTIFICATIONS MODULE SERIALIZERS *******
+class NotificationsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notifications
+        fields = ["id", "created_on", "title", "recipient", "body", "status"]
+
+
+class NotificationsListCheckSerializer(serializers.Serializer):
+    recipient = serializers.BooleanField(required=False, allow_null=True)
+    search = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    from_date = serializers.DateTimeField(required=False, allow_null=True)
+    to_date = serializers.DateTimeField(required=False, allow_null=True)
+
+    def validate(self, attrs):
+        from_date = attrs.get("from_date")
+        to_date = attrs.get("to_date")
+
+        if from_date or to_date:
+            if not from_date or not to_date:
+                raise serializers.ValidationError("both 'from_date' and 'to_date' is required")
+            
+        return attrs
+
+
+class NotificationsRetrieveUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notifications
+        fields = ["recipient", "title", "body","status"]
+
+        extra_kwargs = {
+            "status": {"required": True}
+        }
+
+    def validate(self, data):
+        instance = self.instance
+        if instance and instance.status=='sent':
+            raise serializers.ValidationError({"status": "Notification has already been sent and cannot be edited."}) 
+        return data

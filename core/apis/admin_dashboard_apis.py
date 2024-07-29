@@ -2,20 +2,21 @@ import datetime
 from django.shortcuts import get_object_or_404
 from django.db.models import Q, Sum
 from django.db.models.aggregates import Count
-from django.db.models.functions import TruncMonth 
+from django.db.models.functions import TruncMonth
 from django.utils import timezone
 
 # Third party imports
 from rest_framework.views import APIView
-from .permissions import IsAuthenticatedAndAdmin
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 
 # Local imports
-from .serializers import AdminLoginSerializer, AdminLogoutSerializer, AccountSettingsRetrieveSerializer, AccountSettingsUpdateSerializer, AccountSettingsProfilePictureSerializer, AdminChangePasswordSerializer, BooksCreateRetrieveUpdateSerializer, BooksListSerializer, BooksMultipleDeleteSerializer, EventsCreateSerializer, EventsListSerializer, EventsMultipleDeleteSerializer, EventsRetrieveUpdateSerializer, MaterialsCreateSerializer, MaterialsListSerializer, MaterialsMultipleDeleteSerializer, MaterialsRetrieveUpdateSerializer, ProfessionalsCreateRetrieveSerializer, ProfessionalsDeleteSerializer, ProfessionalsListSerializer, ProfessionalsUpdateSerializer, UserListSerializer, UsersMultipleDeleteSerializer, UsersProfilePictureSerializer, UsersRetrieveUpdateSerializer
-from . paginations import BooksPagination, EventsPagination, MaterialsPagination, ProfessionalsPagination, UsersPagination
-from core.models import Books, CustomUser, AdminUsers, Events, Materials, MobileUsers, Professionals, ProReview
+from .permissions import IsAuthenticatedAndAdmin
+from .serializers import AdminLoginSerializer, AdminLogoutSerializer, AccountSettingsRetrieveSerializer, AccountSettingsUpdateSerializer, AccountSettingsProfilePictureSerializer, AdminChangePasswordSerializer, BooksActivitySerializer, BooksCreateRetrieveUpdateSerializer, BooksListSerializer, BooksMultipleDeleteSerializer, EventsActivitySerializer, EventsCreateSerializer, EventsListSerializer, EventsMultipleDeleteSerializer, EventsRetrieveUpdateSerializer, MaterialsActivitySerializer, MaterialsCreateSerializer, MaterialsListSerializer, MaterialsMultipleDeleteSerializer, MaterialsRetrieveUpdateSerializer, MobileUsersActivitySerializer, NotificationsListCheckSerializer, NotificationsRetrieveUpdateSerializer, NotificationsCreateSerializer, NotificationsListSerializer, ProfessionalsActivitySerializer, ProfessionalsCreateRetrieveSerializer, ProfessionalsDeleteSerializer, ProfessionalsGrowthChartSerializer, ProfessionalsListSerializer, ProfessionalsUpdateSerializer, RevenueGrowthSerializer, TransactionsCreateSerializer, TransactionsListCheckSerializer, TransactionsListSerializer, TransactionsMarkAsCompletedSerializer, UsersListCheckSerializer, UsersListSerializer, UsersMultipleDeleteSerializer, UsersProfilePictureSerializer, UsersRetrieveUpdateSerializer
+from . paginations import BooksPagination, EventsPagination, MaterialsPagination, NotificationsPagination, ProfessionalsPagination, TransactionsPagination, UsersPagination
+from core.models import Books, CustomUser, AdminUsers, Events, Materials, MobileUsers, Notifications, Professionals, ProReview, Transactions
+from core.apis.firebase import get_recipient_fcm_tokens, send_fcm_notification
 
 # Create your views apis.
 # ADMIN MANAGEMENT APIS
@@ -529,35 +530,37 @@ class UsersListDeleteView(APIView):
         List all users.
         """
 
-        date_range = request.query_params.get("date_range", None)
-        # To avoid name conflicts use '_'
-        status_ = request.query_params.get("status", None)
-        search = request.query_params.get("search", None)
+        serializer = UsersListCheckSerializer(data=request.query_params)
+        if serializer.is_valid():
 
-        if not date_range and not status_ and not search:
-            users = MobileUsers.objects.all()
+            status_ = serializer.validated_data.get("status", None)
+            search = serializer.validated_data.get("search", None)
+            from_date = serializer.validated_data.get("from_date", None)
+            to_date = serializer.validated_data.get("to_date", None)
 
-        else:
-            filters = Q()
-            if date_range:
-                filters &= Q(date_range=date_range)
+            if not from_date and not to_date and not status_ and not search:
+                users = MobileUsers.objects.all()
 
-            if status_:
-                choices = [1, 0, "1", "0"]
-                print(status_, "here")
-                if status_ not in choices:
-                    return Response({"detail": {"status": ["Invalid value; the choices are '1', '0'"]}}, status=status.HTTP_400_BAD_REQUEST)
-                filters &= Q(is_active=status_)
+            else:
+                filters = Q()
 
-            if search:
-                filters &= Q(first_name__icontains=search) | Q(email__icontains=search)
+                if from_date and to_date:
+                    filters &= Q(created_on__gte=from_date, created_on__lte=to_date+datetime.timedelta(days=1))
 
-            users = MobileUsers.objects.filter(filters)
+                if status_:
+                    filters &= Q(is_active=status_)
 
-        pagination = UsersPagination()
-        paginated_users = pagination.paginate_queryset(users, request)
-        serializer = UserListSerializer(paginated_users, many=True, context={"request": request})
-        return pagination.get_paginated_response(serializer.data)
+                if search:
+                    filters &= Q(first_name__icontains=search) | Q(email__icontains=search)
+
+                users = MobileUsers.objects.filter(filters)
+
+            pagination = UsersPagination()
+            paginated_users = pagination.paginate_queryset(users, request)
+            serializer = UsersListSerializer(paginated_users, many=True, context={"request": request})
+            return pagination.get_paginated_response(serializer.data)
+        
+        return Response({"detail": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request):
         """
@@ -580,6 +583,7 @@ class UsersListDeleteView(APIView):
     
 
 class UsersDetailView(APIView):
+    permission_classes = [IsAuthenticatedAndAdmin]
     """
     Retrieve specific user
     """
@@ -628,3 +632,504 @@ class UsersDetailView(APIView):
         user.save()
 
         return Response({"detail": "User marked as deactivated"}, status=status.HTTP_200_OK)
+    
+
+# TRASNACTIONS MODULE API'S
+class TransactionListCreateUpdateView(APIView):
+    permission_classes = [IsAuthenticatedAndAdmin]
+
+    def post(self, request):
+        """
+        To create new transaction.
+        """
+
+        serializer = TransactionsCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({"detail": "Transaction created successfully!!"}, status=status.HTTP_200_OK)
+        return Response({"detail": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def get(self, request):
+        """
+        List all transactions.
+        """
+
+        serializer = TransactionsListCheckSerializer(data=request.query_params)
+        if serializer.is_valid():
+
+            type = serializer.validated_data.get("status", None)
+            search = serializer.validated_data.get("search", None)
+            from_date = serializer.validated_data.get("from_date", None)
+            to_date = serializer.validated_data.get("to_date", None)
+            if not from_date and not to_date and not type and not search:
+                transactions = Transactions.objects.all()
+
+            else:
+                filters = Q()
+
+                if from_date and to_date:
+                    filters &= Q(date_time__gte=from_date, date_time__lte=to_date+datetime.timedelta(days=1))
+
+                if type:
+                    filters &= Q(type=type)
+
+                if search:
+                    filters &= Q(user_involved__icontains=search)
+
+                transactions = Transactions.objects.filter(filters)
+
+            pagination = TransactionsPagination()
+            paginated_transactions = pagination.paginate_queryset(transactions, request)
+            serializer = TransactionsListSerializer(paginated_transactions, many=True, context={"request": request})
+            return pagination.get_paginated_response(serializer.data)
+        
+        return Response({"detail": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def patch(self, request):
+        """
+        To mark Pending status to Completed status 
+        """
+
+        serializer = TransactionsMarkAsCompletedSerializer(data=request.data)
+        if serializer.is_valid():
+            ids = request.data.get("ids")
+            try:
+                updated_count = Transactions.objects.filter(id__in=ids, status="pending").update(status="completed")
+
+                if updated_count == 0:
+                    return Response({"detail": "No transaction were updated"}, status=status.HTTP_404_NOT_FOUND)
+                return Response({"detail": f"{updated_count} transactions updated successfully!!"}, status=status.HTTP_200_OK)
+
+            except Exception as e:
+                return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+# DASHBOARD API'S *******
+class KeyMatrixStatisticsView(APIView):
+    permission_classes = [IsAuthenticatedAndAdmin]
+
+    def get(self, request):
+        """
+        API endpoint to retrieve all the data needed for admin_dashboard's
+        key matrix statistics.
+        """
+
+        total_professionals = Professionals.count()
+        total_materials = Materials.count()
+        total_registered_users = MobileUsers.count()
+        total_transactions = Transactions.count()
+
+        response_data = {
+            "total_professionals": total_professionals,
+            "total_materials": total_materials,
+            "total_registered_users": total_registered_users,
+            "total_transactions": total_transactions,
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
+    
+
+class ProfessionalsGrowthChartView(APIView):
+    permission_classes = [IsAuthenticatedAndAdmin]
+
+    def get(self, request):
+        """
+        Returns the count of professionals added each month 
+        for the given number of past months.
+        """
+
+        serializer = ProfessionalsGrowthChartSerializer(data=request.query_params)
+        if serializer.is_valid():
+            months = serializer.validated_data["months"]
+            end_date = datetime.datetime.now()
+
+            # Initialize a dictionary to store counts for each month.
+            month_counts = {}
+            for i in range(months):
+                month_start = datetime.datetime(end_date.year, end_date.month, 1)
+                month_str = month_start.strftime("%Y-%m")
+                # Initialize the count for this month to 0.
+                month_counts[month_str] = 0
+        
+                end_date = month_start - datetime.timedelta(days=1)
+
+            start_date = datetime.datetime(end_date.year, end_date.month, 1)
+    
+            professionals = Professionals.objects.filter(created_on__range=[start_date, datetime.datetime.now()])
+            queryset = professionals.annotate(month=TruncMonth('created_on')).values('month').annotate(count=Count('id'))
+
+            # Update the month_counts dictionary with actual counts from the query results.
+            for entry in queryset:
+                month_str = entry["month"].strftime("%Y-%m")
+                month_counts[month_str] = entry["count"]
+
+            professionals_growth_chart = [{'month': month, 'count': count} for month, count in month_counts.items()]
+
+            response = {
+                "months": months,
+                "professionals_growth_chart": professionals_growth_chart
+            }
+
+            return Response(response, status=status.HTTP_200_OK)
+        
+        return Response({"detail": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RevenueGrowthView(APIView):
+    permission_classes = [IsAuthenticatedAndAdmin]
+
+    def get(self, request):
+        """
+        Gives revenue growth report based on given periods,
+        1. weekly -> gives report on that week
+        2. monthly -> gives report on that month
+        3. yearly -> gives report on that year
+        """
+        serializer = RevenueGrowthSerializer(data=request.query_params)
+        if serializer.is_valid():
+            periods = serializer.validated_data['periods']
+            
+            if periods == 'weekly':
+                today = datetime.datetime.now()
+                start_date = datetime.datetime(today.year, today.month, today.day) - datetime.timedelta(days=datetime.datetime.now().weekday())
+                end_date = start_date + datetime.timedelta(days=6)
+
+                # Get previous week date to calculate percentage
+                prev_start_date = start_date - datetime.timedelta(days=7)
+                delta = datetime.timedelta(days=1)
+
+                transactions = Transactions.objects.filter(date_time__gte=start_date, type='payment', status='completed')
+                total_revenue = transactions.aggregate(Sum('amount'))['amount__sum'] or 0.0
+
+                prev_transactions = Transactions.objects.filter(date_time__gte=prev_start_date, date_time__lt=start_date, status='completed')
+                prev_total_revenue = prev_transactions.aggregate(Sum('amount'))['amount__sum'] or 0.0
+
+                if prev_total_revenue == 0:
+                    percentage_change = 100.0 if total_revenue > 0 else 0.0
+                else:
+                    percentage_change = ((total_revenue - prev_total_revenue) / prev_total_revenue) * 100
+
+                current_date = start_date
+                revenue_data = []
+                while current_date <= end_date:
+                    next_date = current_date + delta
+                    period_revenue = transactions.filter(date_time__gte=current_date, date_time__lt=next_date).aggregate(Sum('amount'))['amount__sum'] or 0.0
+                    revenue_data.append({
+                        'date': current_date.strftime('%Y-%m-%d'),
+                        'revenue': period_revenue
+                    })
+
+                    current_date = next_date
+
+            
+            elif periods == 'monthly':
+                today = datetime.datetime.now()
+                start_date = datetime.datetime(today.year, today.month, 1)
+                # Get the current month's last date
+                if today.month == 12:
+                    end_date = datetime.datetime(today.year+1, 1, 1) - datetime.timedelta(days=1)
+                else:
+                    end_date = datetime.datetime(today.year, today.month+1, 1) - datetime.timedelta(days=1)
+                # Get previous week to calculate percentage
+                if today.month == 1:
+                    prev_start_date = datetime.datetime(today.year-1, 12, 1)
+                else:
+                    prev_start_date = datetime.datetime(today.year, today.month-1, 1)
+                delta = datetime.timedelta(days=7)
+
+
+                transactions = Transactions.objects.filter(date_time__gte=start_date, type='payment', status='completed')
+                total_revenue = transactions.aggregate(Sum('amount'))['amount__sum'] or 0.0
+
+                prev_transactions = Transactions.objects.filter(date_time__gte=prev_start_date, date_time__lt=start_date, status='completed')
+                prev_total_revenue = prev_transactions.aggregate(Sum('amount'))['amount__sum'] or 0.0
+
+                if prev_total_revenue == 0:
+                    percentage_change = 100.0 if total_revenue > 0 else 0.0
+                else:
+                    percentage_change = ((total_revenue - prev_total_revenue) / prev_total_revenue) * 100
+
+                current_date = start_date
+                revenue_data = []
+                while current_date <= end_date:
+                    next_date = current_date + delta
+                    period_revenue = transactions.filter(date_time__gte=current_date, date_time__lt=next_date).aggregate(Sum('amount'))['amount__sum'] or 0.0
+                    revenue_data.append({
+                        'week_start': current_date.strftime('%Y-%m-%d'),
+                        'week_end': (next_date-datetime.timedelta(days=1)).strftime('%Y-%m-%d'),
+                        'revenue': period_revenue
+                    })
+                    current_date = next_date
+    
+            elif periods == 'yearly':
+                today = datetime.datetime.now()
+                start_date = datetime.datetime(today.year, 1, 1)
+                end_date = datetime.datetime(today.year, 12, 31)
+                prev_start_date = datetime.datetime(today.year-1, 1, 1)
+
+                transactions = Transactions.objects.filter(date_time__gte=start_date, type='payment', status='completed')
+                total_revenue = transactions.aggregate(Sum('amount'))['amount__sum'] or 0.0
+
+                prev_transactions = Transactions.objects.filter(date_time__gte=prev_start_date, date_time__lt=start_date, type='payment', status='completed')
+                prev_total_revenue = prev_transactions.aggregate(Sum('amount'))['amount__sum'] or 0.0
+
+                if prev_total_revenue == 0:
+                    percentage_change = 100.0 if total_revenue > 0 else 0.0
+                else:
+                    percentage_change = ((total_revenue - prev_total_revenue) / prev_total_revenue) * 100
+
+                current_date = start_date
+                revenue_data = []
+                while current_date <= end_date:
+                    # Get next month's first date
+                    if current_date.month == 12:
+                        next_date = datetime.datetime(current_date.year+1, 1, 1)
+                    else:
+                        next_date = datetime.datetime(current_date.year, current_date.month+1, 1)
+
+                    period_revenue = transactions.filter(date_time__gte=current_date, date_time__lt=next_date).aggregate(Sum('amount'))['amount__sum'] or 0.0
+                    revenue_data.append({
+                        'month': current_date.strftime('%Y-%m'),
+                        'revenue': period_revenue
+                    })
+                    current_date = next_date
+    
+            data = {
+                'periods': periods,
+                'total_revenue': total_revenue,
+                'percentage_change': percentage_change,
+                'revenue_data': revenue_data,
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        return Response({"detail": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ActivityTimelineView(APIView):
+    permission_classes = [IsAuthenticatedAndAdmin]
+
+    def get(self, request):
+        activities = []
+
+        professionals = Professionals.objects.all().order_by('-created_on')[:10]
+        materials = Materials.objects.all().order_by('-created_on')[:10]
+        events = Events.objects.all().order_by('-created_on')[:10]
+        books = Books.objects.all().order_by('-created_on')[:10]
+        users = MobileUsers.objects.all().order_by('-created_on')[0:10]
+
+        for professional in professionals:
+            activities.append({
+                "type": "professional",
+                "data": ProfessionalsActivitySerializer(professional).data,
+                "created_on": professional.created_on
+            })
+
+        for material in materials:
+            activities.append({
+                "type": "material",
+                "data": MaterialsActivitySerializer(material).data,
+                "created_on": material.created_on
+            })
+
+        for event in events:
+            activities.append({
+                "type": "event",
+                "data": EventsActivitySerializer(event).data,
+                "created_on": event.created_on
+            })
+
+        for book in books:
+            activities.append({
+                "type": "book",
+                "data": BooksActivitySerializer(book).data,
+                "created_on": book.created_on
+            })
+
+        for user in users:
+            activities.append({
+                "type": "user",
+                "data": MobileUsersActivitySerializer(user).data,
+                "created_on": user.created_on
+            })
+
+        # Sorting activities by created_on date
+        activities.sort(key=lambda x: x['created_on'], reverse=True)
+
+        return Response(activities, status=status.HTTP_200_OK)
+    
+
+class MaterialsDistributionView(APIView):
+    """
+    API endpoint that returns the distribution of materials by type.
+    
+    This endpoint calculates the percentage distribution of different types of materials
+    (Electricals, Building Materials, Others).
+    """
+
+    permission_classes = [IsAuthenticatedAndAdmin]
+
+    def get(self, request):
+        total_count = Materials.objects.count()
+        electricals_count = Materials.objects.filter(type='Electricals').count()
+        building_materials_count = Materials.objects.filter(type='Building Materials').count()
+        others_count = total_count - (electricals_count + building_materials_count)
+
+        if total_count > 0:
+            electricals_percentage = (electricals_count / total_count) * 100
+            building_materials_percentage = (building_materials_count / total_count) * 100
+            others_percentage = (others_count / total_count) * 100
+        else:
+            electricals_percentage = 0
+            building_materials_percentage = 0
+            others_percentage = 0
+
+        data = {
+            'total_count': total_count,
+            'electricals_count': electricals_count,
+            'electricals_percentage': electricals_percentage,
+            'building_materials_count': building_materials_count,
+            'building_materials_percentage': building_materials_percentage,
+            'others_count': others_count,
+            'others_percentage': others_percentage
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
+    
+
+# NOTIFICATIONS MODULE APIS *******
+class NotificationsFCMHTTPListCreateView(APIView):
+    permission_classes = [IsAuthenticatedAndAdmin]
+
+    def get(self, request):
+        """
+        List all notifications
+        """
+
+        serializer = NotificationsListCheckSerializer(data=request.query_params)
+        if serializer.is_valid():
+
+            recipient = serializer.validated_data.get("status", None)
+            search = serializer.validated_data.get("search", None)
+            from_date = serializer.validated_data.get("from_date", None)
+            to_date = serializer.validated_data.get("to_date", None)
+
+            if not from_date and not to_date and not recipient and not search:
+                notifications = Notifications.objects.all()
+
+            else:
+                filters = Q()
+
+                if from_date and to_date:
+                    filters &= Q(created_on__gte=from_date, created_on__lte=to_date+datetime.timedelta(days=1))
+
+                if recipient:
+                    filters &= Q(recipient=recipient)
+
+                if search:
+                    filters &= Q(title__icontains=search) | Q(body__icontains=search)
+
+                notifications = Notifications.objects.filter(filters)
+
+            pagination = NotificationsPagination()
+            paginated_notifications = pagination.paginate_queryset(notifications, request)
+            serializer = NotificationsListSerializer(paginated_notifications, many=True, context={"request": request})
+            return pagination.get_paginated_response(serializer.data)
+        
+        return Response({"detail": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def post(self, request):
+        """
+        This API sends push notifications to users with an FCM token if the status is 'send'. 
+        If the status is 'pending', it adds the notification to the Notifications table for later sending.
+        """
+
+        serializer = NotificationsCreateSerializer(data=request.data)
+        if serializer.is_valid():
+
+            if serializer.validated_data["status"] != "pending":
+
+                title = serializer.validated_data['title']
+                body = serializer.validated_data['body']
+                recipient = serializer.validated_data['recipient']
+
+                recipient_tokens = get_recipient_fcm_tokens(recipient)
+
+                if recipient_tokens:
+                    """
+                    We need to send the image url to firebase
+                    so we are saving notifaction first before
+                    sending it.
+                    """
+                    notification = serializer.save()
+                    image = request.build_absolute_uri(notification.image.url)
+
+                    response = send_fcm_notification(recipient_tokens, title, body, image)
+
+                    if response.status_code != 200:
+
+                        notification.status = "failed"
+                        notification.save()
+
+                        return Response({"detail": response.json()}, status=response.status_code)
+                    return Response({"detail": "Notification sent successfully!"}, status=status.HTTP_200_OK)
+                    
+                return Response({"detail": "No user found; notification cannot be sent"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            serializer.save()
+            return Response({"detail": "Notification added successfully"}, status=status.HTTP_200_OK)
+        
+        return Response({"detail": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class NotificationsFCMHTTPRetrieveUpdateDeleteView(APIView):
+    permission_classes = [IsAuthenticatedAndAdmin]
+
+    def get(self, request, pk):
+        """
+        List specific notification.
+        """
+
+        notification = get_object_or_404(Notifications, id=pk)
+        serializer = NotificationsRetrieveUpdateSerializer(notification)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def put(self, request, pk):
+        """
+        Update specific notification.
+        """
+
+        notification = get_object_or_404(Notifications, id=pk)
+
+        serializer = NotificationsRetrieveUpdateSerializer(notification, data=request.data)
+        if serializer.is_valid():
+
+            if serializer.validated_data["status"] == "sent":
+
+                title = serializer.validated_data['title']
+                body = serializer.validated_data['body']
+                recipient = serializer.validated_data['recipient']
+
+                recipient_tokens = get_recipient_fcm_tokens(recipient)
+                if recipient_tokens:
+                    image = request.build_absolute_uri(notification.image.url)
+                    response = send_fcm_notification(recipient_tokens, title, body, image)
+
+                    if response.status_code != 200:
+
+                        notification.status = "failed"
+                        notification.save()
+
+                        return Response({"detail": response.json()}, status=response.status_code)
+                    
+                    serializer.save()
+                    return Response({"detail": "Notification sent and updated successfully!"}, status=status.HTTP_200_OK)
+                    
+                serializer.save()
+                return Response({"detail": "Notification updated sucessfully but no users found"}, status=status.HTTP_200_OK)
+
+            serializer.save()
+            return Response({"detail": "Notification updated successfully!"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response({"detail": serializer.errors}, status=status.HTTP_404_NOT_FOUND)

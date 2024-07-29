@@ -4,7 +4,7 @@ from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 
 # Local imports
-from core.apis.admin_dashboard_apis import AdminLoginView, AdminLogoutView, AdminAccountSettingsView, AdminSecurityView, BooksListCreateDeleteView, BooksRetriveUpdateDeleteView, EventsListCreateDeleteView, EventsRetriveUpdateDeleteView, MaterialsListCreateDeleteView, MaterialsRetriveUpdateDeleteView, ProfessionalsListCreateDeleteView, ProfessionalsRetrieveUpdateDeleteView, UsersDetailView, UsersListDeleteView
+from core.apis.admin_dashboard_apis import ActivityTimelineView, AdminLoginView, AdminLogoutView, AdminAccountSettingsView, AdminSecurityView, BooksListCreateDeleteView, BooksRetriveUpdateDeleteView, EventsListCreateDeleteView, EventsRetriveUpdateDeleteView, KeyMatrixStatisticsView, MaterialsDistributionView, MaterialsListCreateDeleteView, MaterialsRetriveUpdateDeleteView, NotificationsFCMHTTPListCreateView, NotificationsFCMHTTPRetrieveUpdateDeleteView, ProfessionalsGrowthChartView, ProfessionalsListCreateDeleteView, ProfessionalsRetrieveUpdateDeleteView, RevenueGrowthView, TransactionListCreateUpdateView, UsersDetailView, UsersListDeleteView
 
 urlpatterns = [
     # Admin management
@@ -12,12 +12,12 @@ urlpatterns = [
     path('refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('logout', AdminLogoutView.as_view()),
 
-    # # Admin dashboard
-    # path('dashboard/key_matrix_statistics', KeyMatrixStatisticsView.as_view()),
-    # path('dashboard/professionals_growth_chart', ProfessionalsGrowthChartView.as_view()),
-    # path('dashboard/revenue_growth_chart', RevenueGrowthView.as_view()),
-    # path('dashboard/activity_timeline', ActivityTimelineView.as_view()),
-    # path('dashboard/materials_distribution', MaterialsDistributionView.as_view()),
+    # Admin dashboard
+    path('dashboard/key_matrix_statistics', KeyMatrixStatisticsView.as_view()),
+    path('dashboard/professionals_growth_chart', ProfessionalsGrowthChartView.as_view()),
+    path('dashboard/revenue_growth_chart', RevenueGrowthView.as_view()),
+    path('dashboard/activity_timeline', ActivityTimelineView.as_view()),
+    path('dashboard/materials_distribution', MaterialsDistributionView.as_view()),
 
     # Settings
     path('account_settings', AdminAccountSettingsView.as_view()),
@@ -44,11 +44,10 @@ urlpatterns = [
     path('events', EventsListCreateDeleteView.as_view()),
     path('events/<int:pk>', EventsRetriveUpdateDeleteView.as_view()),
 
-    # # Transactions
-    # path('transactions', TransactionListCreateUpdateView.as_view()),
+    # Transactions
+    path('transactions', TransactionListCreateUpdateView.as_view()),
 
-    # # Notifications
-    # path('notifications', NotificationsFCMHTTPListCreateView.as_view()),
-    # path('notifications/<int:pk>', NotificationsFCMHTTPRetrieveUpdateDeleteView.as_view()),
-    # path('notifications/sdk', NotificationUsingSDKView.as_view()),
+    # Notifications
+    path('notifications', NotificationsFCMHTTPListCreateView.as_view()),
+    path('notifications/<int:pk>', NotificationsFCMHTTPRetrieveUpdateDeleteView.as_view()),
 ]

@@ -187,3 +187,40 @@ class Materials(models.Model):
     @classmethod
     def count(cls):
         return cls.objects.count()
+    
+
+# TRANSACTIONS MODULE MODELS *******
+class Transactions(models.Model):
+    TYPE_CHOICES = (('payment', 'Payment'), ('refund', 'Refund'))
+    STATUS_CHOICES = (('completed', 'Completed'), ('pending', 'Pending'), ('refunded', 'Refunded'))
+
+    date_time = models.DateTimeField(auto_now=True)
+    user_involved = models.CharField(max_length=150)
+    type = models.CharField(max_length=100, choices=TYPE_CHOICES)
+    amount = models.FloatField()
+    status = models.CharField(max_length=100, choices=STATUS_CHOICES)
+
+    def __str__(self):
+        return f'{self.user_involved} - {self.type}'
+    
+    @classmethod
+    def count(cls):
+        return cls.objects.count()
+    
+
+
+# NOTIFICATIONS MODULE MODELS *******
+class Notifications(models.Model):
+    RECIPIENT_CHOICES = [('all users', 'All Users')]
+    STATUS_CHOICES = [('sent', 'Sent'), ('pending', 'Pending'), ('failed', 'Failed')]
+
+    title = models.CharField(max_length=250)
+    recipient =models.CharField(max_length=100, choices=RECIPIENT_CHOICES)
+    status = models.CharField(max_length=25, choices=STATUS_CHOICES, default='pending')
+    body = models.TextField()
+    image = models.ImageField(upload_to='notifications/')
+    created_on = models.DateTimeField(auto_now_add=True)
+    last_edited = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f"{self.id} - {self.status}"

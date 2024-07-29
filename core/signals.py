@@ -3,7 +3,7 @@ from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 
 # Local imports
-from .models import AdminUsers, Professionals, Books, Events, Materials, MobileUsers
+from .models import AdminUsers, Professionals, Books, Events, Materials, MobileUsers, Notifications
 
 
 def delete_file(path):
@@ -15,7 +15,7 @@ def delete_file(path):
 @receiver(post_delete, sender=Materials)
 @receiver(post_delete, sender=Events)
 @receiver(post_delete, sender=MobileUsers)
-# @receiver(post_delete, sender=Notifications)
+@receiver(post_delete, sender=Notifications)
 def delete_associated_files(sender, instance, **kwargs):
     if instance.image:
         delete_file(instance.image.path)
@@ -25,7 +25,7 @@ def delete_associated_files(sender, instance, **kwargs):
 @receiver(pre_save, sender=Materials)
 @receiver(pre_save, sender=Events)
 @receiver(pre_save, sender=MobileUsers)
-# @receiver(pre_save, sender=Notifications)
+@receiver(pre_save, sender=Notifications)
 def delete_old_file_on_change(sender, instance, **kwargs):
     if not instance.pk:
         return

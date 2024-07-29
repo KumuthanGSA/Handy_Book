@@ -25,3 +25,13 @@ class MaterialsPagination(PageNumberPagination):
 # USERS MODULE PAGINATIONS *******
 class UsersPagination(PageNumberPagination):
     page_size = 10
+
+
+# TRANSACTIONS MODULE PAGINATIONS *******
+class TransactionsPagination(PageNumberPagination):
+    page_size = 10
+
+
+# NOTIFICATION MODULE PAGINATIONS *******
+class NotificationsPagination(PageNumberPagination):
+    page_size = 10
