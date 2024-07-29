@@ -11,7 +11,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
 # Local imports
-from core.models import CustomUser, AdminUsers, Professionals, ProReview
+from core.models import Books, CustomUser, AdminUsers, Events, Materials, MobileUsers, Professionals, ProReview
 
 # Create your serializers here
 
@@ -201,3 +201,109 @@ class ProfessionalsUpdateSerializer(serializers.ModelSerializer):
             admin_review.save()
 
         return instance
+    
+
+# BOOKS MODULE SERIALIZERS *******
+class BooksCreateRetrieveUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Books
+        fields = ["name", "price", "description", "additional_details", "image", "availability"]
+
+        extra_kwargs ={
+            "availability": {"required": True}
+        }
+    
+
+class BooksListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Books
+        fields = ["id", "image", "name", "price", "availability"]
+
+
+class BooksMultipleDeleteSerializer(serializers.Serializer):
+    ids = serializers.ListField(child=serializers.IntegerField())
+
+
+# EVENTS MODULE SERIALIZERS *******
+class EventsCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Events
+        fields = ["title", "date", "location", "description", "image", "additional_informations"]
+
+
+class EventsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Events
+        fields = ["id", "title", "date", "location"]
+
+
+class EventsMultipleDeleteSerializer(serializers.Serializer):
+    ids = serializers.ListField(child=serializers.IntegerField())
+
+
+class EventsRetrieveUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Events
+        fields = ["title", "date", "location", "description", "image", "additional_informations"]
+
+        extra_kwargs ={
+            "additional_informations": {"required": True}
+        }
+
+# MATERIALS MODULE SERIALIZERS
+class MaterialsCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Materials
+        fields = ["name", "type", "supplier_name", "supplier_phone_no", "price", "discount_percentage", "title", "availability", "image", "description", "overview", "additional_details"]
+
+
+class MaterialsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Materials
+        fields = ["id", "name", "image", "type", "supplier_name", "supplier_phone_no", "price", "availability"]
+
+
+class MaterialsMultipleDeleteSerializer(serializers.Serializer):
+    ids = serializers.ListField(child=serializers.IntegerField())
+
+
+class MaterialsRetrieveUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Materials
+        fields = ["name", "type", "supplier_name", "supplier_phone_no", "price", "discount_percentage", "title", "availability", "image", "description", "overview", "additional_details"]
+
+        extra_kwargs ={
+            "availability": {"required": True},
+            "overview": {"required": True},
+            "additional_details": {"required": True}
+        }
+
+
+# USERS MODULE SERIALIZERS
+class UserListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MobileUsers
+        fields = ["id", "first_name", "email", "phone_no", "created_on", "is_active"]
+
+
+class UsersMultipleDeleteSerializer(serializers.Serializer):
+    ids = serializers.ListField(child=serializers.IntegerField())
+        
+
+class UsersRetrieveUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MobileUsers
+        fields = ["id", "first_name", "email", "phone_no", "created_on", "image"]
+
+        extra_kwargs = {
+            'phone_no': {'required': True, 'allow_blank': False, 'allow_null': False},
+        }
+
+class UsersProfilePictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MobileUsers
+        fields = ["image"]
+    
+        extra_kwargs = {
+            'image': {'required': True, 'allow_null': False}
+        }

@@ -4,7 +4,7 @@ from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 
 # Local imports
-from core.apis.admin_dashboard_apis import AdminLoginView, AdminLogoutView, AdminAccountSettingsView, AdminSecurityView, ProfessionalsListCreateDeleteView, ProfessionalsRetrieveUpdateDeleteView
+from core.apis.admin_dashboard_apis import AdminLoginView, AdminLogoutView, AdminAccountSettingsView, AdminSecurityView, BooksListCreateDeleteView, BooksRetriveUpdateDeleteView, EventsListCreateDeleteView, EventsRetriveUpdateDeleteView, MaterialsListCreateDeleteView, MaterialsRetriveUpdateDeleteView, ProfessionalsListCreateDeleteView, ProfessionalsRetrieveUpdateDeleteView, UsersDetailView, UsersListDeleteView
 
 urlpatterns = [
     # Admin management
@@ -26,27 +26,23 @@ urlpatterns = [
     # Professionals
     path('professionals', ProfessionalsListCreateDeleteView.as_view()),
     path('professionals/<int:pk>', ProfessionalsRetrieveUpdateDeleteView.as_view()),
-    # # path('proexpertise', ExpertiseListCreateView.as_view()),
-    # # path('proexpertise/<int:pk>', ExpertiseRetrieveUpdateDeleteView.as_view()),
-    # # path('prolocation', LocationListCreateView.as_view()),
-    # # path('prolocation/<int:pk>', LocationRetrieveUpdateDeleteView.as_view()),
     
 
-    # #Users
-    # path('users', UsersListDeleteView.as_view()),
-    # path('users/<int:pk>', UsersDetailView.as_view()),
+    #Users
+    path('users', UsersListDeleteView.as_view()),
+    path('users/<int:pk>', UsersDetailView.as_view()),
 
-    # # Books
-    # path('books', BooksListCreateDeleteView.as_view()),
-    # path('books/<int:pk>', BooksRetriveUpdateDeleteView.as_view()),
+    # Books
+    path('books', BooksListCreateDeleteView.as_view()),
+    path('books/<int:pk>', BooksRetriveUpdateDeleteView.as_view()),
 
-    # # Materials
-    # path('materials', MaterialsListCreateDeleteView.as_view()),
-    # path('materials/<int:pk>', MaterialsRetriveUpdateDeleteView.as_view()),
+    # Materials
+    path('materials', MaterialsListCreateDeleteView.as_view()),
+    path('materials/<int:pk>', MaterialsRetriveUpdateDeleteView.as_view()),
 
-    # # Events
-    # path('events', EventsListCreateDeleteView.as_view()),
-    # path('events/<int:pk>', EventsRetriveUpdateDeleteView.as_view()),
+    # Events
+    path('events', EventsListCreateDeleteView.as_view()),
+    path('events/<int:pk>', EventsRetriveUpdateDeleteView.as_view()),
 
     # # Transactions
     # path('transactions', TransactionListCreateUpdateView.as_view()),

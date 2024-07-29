@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     "phonenumber_field",
 
     # Local imports
-    "core"
+    "core",
+    "mobile_app"
 ]
 
 REST_FRAMEWORK = {

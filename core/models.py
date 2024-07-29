@@ -32,7 +32,7 @@ class CustomUserManager(BaseUserManager):
     
 
 class CustomUser(AbstractUser):
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, null=True, blank=True)
 
     objects = CustomUserManager()
 
@@ -60,7 +60,29 @@ class AdminUsers(models.Model):
         return f' {self.id} - {self.first_name}'
     
 
-# PROFESSIONALS MODULE MODELS
+# USERS MODULE MODELS *******
+class MobileUsers(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
+    image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+    email = models.EmailField(unique=True)
+    phone_no = PhoneNumberField(region="IN", unique=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    last_edited = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
+    fcm_token = models.TextField(blank=True, null=True)
+    otp = models.CharField(max_length=4, null=True, blank=True)
+
+    def __str__(self) -> str:
+        return f' {self.id} - {self.first_name}'
+    
+    @classmethod
+    def count(cls):
+        return cls.objects.count()
+    
+
+# PROFESSIONALS MODULE MODELS *******
 """
 Represents individual professionals, including their personal details and associated expertise.
 """
@@ -107,3 +129,61 @@ class ProReview(models.Model):
 
     def __str__(self) -> str:
         return f' {self.id} - {self.review}'
+    
+
+# BOOKS MODULE MODELS *******
+class Books(models.Model):
+    AVAILABILITY_CHOICES = (('in stock', 'In Stock'), ('out of stock', 'Out of Stock'))
+    name = models.CharField(max_length=300)
+    price = models.FloatField()
+    description = models.TextField()
+    additional_details = models.TextField()
+    image = models.ImageField(upload_to='books',)
+    availability = models.CharField(max_length=30, choices=AVAILABILITY_CHOICES, default='In Stock')
+    created_on = models.DateTimeField(auto_now_add=True)
+    last_edited = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f' {self.id} - {self.name}'
+    
+
+# EVENTS MODULE MODELS *******
+class Events(models.Model):
+    title = models.CharField(max_length=250)
+    date = models.DateTimeField()
+    location = models.CharField(max_length=150)
+    description = models.TextField()
+    image = models.ImageField(upload_to='events/',)
+    additional_informations = models.TextField(blank=True, null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    last_edited = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f' {self.id} - {self.title}'
+    
+
+# MATERIALS MODULE MODELS *******
+class Materials(models.Model):
+    AVAILABILITY_CHOICES = (('in stock', 'In Stock'), ('out of stock', 'Out of Stock'))
+    
+    name = models.CharField(max_length=250)
+    type = models.CharField(max_length=250)
+    supplier_name = models.CharField(max_length=250)
+    supplier_phone_no = PhoneNumberField(region='IN')
+    price = models.FloatField()
+    discount_percentage = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(100)])
+    title = models.CharField(max_length=250)
+    availability = models.CharField(max_length=30, choices=AVAILABILITY_CHOICES, default='in stock')
+    image = models.ImageField(upload_to='materials/',)
+    description = models.TextField()
+    overview = models.TextField(blank=True, null=True)
+    additional_details = models.TextField(blank=True, null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    last_edited = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f' {self.id} - {self.name}'
+    
+    @classmethod
+    def count(cls):
+        return cls.objects.count()

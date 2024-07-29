@@ -5,3 +5,23 @@ from rest_framework.pagination import PageNumberPagination
 # PROFESSIONALS MODULE PAGINATIONS
 class ProfessionalsPagination(PageNumberPagination):
     page_size = 10
+
+
+# BOOKS MODULE PAGINATIONS *******
+class BooksPagination(PageNumberPagination):
+    page_size = 10
+
+
+# EVENTS MODULE PAGINATIONS *******
+class EventsPagination(PageNumberPagination):
+    page_size = 10
+
+
+# MATERIALS MODULE PAGINATIONS *******
+class MaterialsPagination(PageNumberPagination):
+    page_size = 10
+
+
+# USERS MODULE PAGINATIONS *******
+class UsersPagination(PageNumberPagination):
+    page_size = 10
