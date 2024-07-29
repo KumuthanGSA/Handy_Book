@@ -1,0 +1,2623 @@
+{
+	"info": {
+		"_postman_id": "8bfd126a-03ac-4cfa-a93f-1e75de085c6e",
+		"name": "Handy Book",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26221632",
+		"_collection_link": "https://lunar-crescent-958349.postman.co/workspace/My-Workspace~62e08a42-2fef-46df-8141-53c3c1b8a64f/collection/26221632-8bfd126a-03ac-4cfa-a93f-1e75de085c6e?action=share&source=collection_link&creator=26221632"
+	},
+	"item": [
+		{
+			"name": "Admin_Dashboard",
+			"item": [
+				{
+					"name": "Admin_management",
+					"item": [
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"calebkumu@gmail.com\",\r\n    \"password\": \"Kumuthan@2024\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/login",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Refresh",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyMjY5OTc0NywiaWF0IjoxNzIyMDk0OTQ3LCJqdGkiOiI2MTEzZjEzNjMwYTA0ZjM5YmE3ZmYzMzM5NTNmMTA3ZSIsInVzZXJfaWQiOjF9.YT4h0VYSbWgppv0QrdPe1RSDm6CMhNuFs7BF6DMOhrE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/refresh",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"refresh"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIyMTA1MzkxLCJpYXQiOjE3MjIwOTgxOTEsImp0aSI6ImNkNDgxMGQ0YzFmZDQ1NGRiZGQzN2VmNTI0MGMwMDYwIiwidXNlcl9pZCI6Mn0.gJR1udVqiiNSHpFAeT1dTml_04yXOiPwXLFsYqANPt0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyMjcwMjk5MSwiaWF0IjoxNzIyMDk4MTkxLCJqdGkiOiI4ZjE5ZmM5M2Y5OWE0NmJkYjA4ZWQ1NmJkMTcyNjUyYSIsInVzZXJfaWQiOjJ9.okSWcponMSKhAMYeCnG_Fo6MQfQdjX2Yswrlgqn9GLY\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/logout",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Proffessionals",
+					"item": [
+						{
+							"name": "Create Proffessionals",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Caleb",
+											"type": "text"
+										},
+										{
+											"key": "expertise",
+											"value": "Software Development",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "caleb@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "phone_no",
+											"value": "8098536068",
+											"type": "text"
+										},
+										{
+											"key": "location",
+											"value": "Vedharanyam",
+											"type": "text"
+										},
+										{
+											"key": "about",
+											"value": "Django developer with more than 2 yrs of experiance",
+											"type": "text"
+										},
+										{
+											"key": "experiance",
+											"value": "NDOT Technologies",
+											"type": "text"
+										},
+										{
+											"key": "portfolio",
+											"type": "file",
+											"src": "/C:/Users/sothi/Documents/Hidden Treasure #2.pdf"
+										},
+										{
+											"key": "review",
+											"value": "Good",
+											"type": "text"
+										},
+										{
+											"key": "rating",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "banner",
+											"type": "file",
+											"src": "/C:/Users/sothi/Pictures/Caleb/DTDK8484 - Copy - Copy - Copy.JPG"
+										},
+										{
+											"key": "website",
+											"value": "https://github.com/KumuthanGSA/Handy_Book",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/professionals",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"professionals"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Proffessionals",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/professionals?search=&expertise=&location=",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"professionals"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": ""
+										},
+										{
+											"key": "expertise",
+											"value": ""
+										},
+										{
+											"key": "location",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve Professional",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/professionals/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"professionals",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Professional",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Fredrick",
+											"type": "text"
+										},
+										{
+											"key": "expertise",
+											"value": "Full Stack Developer",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "fredrick@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "phone_no",
+											"value": "1234567890",
+											"type": "text"
+										},
+										{
+											"key": "location",
+											"value": "Hosur",
+											"type": "text"
+										},
+										{
+											"key": "about",
+											"value": "Django developer with more than 2 yrs of experiance",
+											"type": "text"
+										},
+										{
+											"key": "experiance",
+											"value": "NDOT Technologies",
+											"type": "text"
+										},
+										{
+											"key": "review",
+											"value": "Bad",
+											"type": "text"
+										},
+										{
+											"key": "rating",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "website",
+											"value": "https://github.com/KumuthanGSA/Handy_Book",
+											"type": "text"
+										},
+										{
+											"key": "banner",
+											"type": "file",
+											"src": "/C:/Users/sothi/Pictures/Caleb/DTDK8484 - Copy - Copy - Copy.JPG"
+										},
+										{
+											"key": "portfolio",
+											"type": "file",
+											"src": "/C:/Users/sothi/Documents/Apptitude/chain rule.txt"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/professionals/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"professionals",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Professional",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/professionals/3",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"professionals",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "MultiDelete Professional",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ids\": [2]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/professionals",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"professionals"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Retrieve User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/users/2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/users?search=uru&status=1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"users"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "uru"
+										},
+										{
+											"key": "status",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"first_name\": \"GuruSai\",\r\n    \"email\": \"calebkumu@gmail.com\",\r\n    \"phone_no\": \"8098536068\"\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/users/2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Profile Picture",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/C:/Users/sothi/Pictures/100APPLE/IMG_0120.JPG"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/users/2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteMulti Users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ids\": [1, 2]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/users",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Single User",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMTQwMzYwLCJpYXQiOjE3MjExMzMxNjAsImp0aSI6IjM3M2JlMTRhOTA4MjRkODQ4NGI4ZjgwNDk3ZjNjMjI4IiwidXNlcl9pZCI6MX0.Z9X5miT1EjiGKicANDpETtSvfh5ZKD3-9dnGH-lDRVo",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/users/2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"users",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Settings",
+					"item": [
+						{
+							"name": "Retrieve Account Settings",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/account_settings",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"account_settings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Account Settings",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIyMTA1MzkxLCJpYXQiOjE3MjIwOTgxOTEsImp0aSI6ImNkNDgxMGQ0YzFmZDQ1NGRiZGQzN2VmNTI0MGMwMDYwIiwidXNlcl9pZCI6Mn0.gJR1udVqiiNSHpFAeT1dTml_04yXOiPwXLFsYqANPt0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "first_name",
+											"value": "Kumuthan",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "Sothinayagam",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "calebkumu@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "phone_no",
+											"value": "9361466402",
+											"type": "text"
+										},
+										{
+											"key": "designation",
+											"value": "Backend Django Developer",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/account_settings",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"account_settings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Profile Picture",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIyMTA1MzkxLCJpYXQiOjE3MjIwOTgxOTEsImp0aSI6ImNkNDgxMGQ0YzFmZDQ1NGRiZGQzN2VmNTI0MGMwMDYwIiwidXNlcl9pZCI6Mn0.gJR1udVqiiNSHpFAeT1dTml_04yXOiPwXLFsYqANPt0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/C:/Users/sothi/Pictures/101APPLE/EZLU3978.JPG"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/account_settings",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"account_settings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Change Password",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIyMTA1MzkxLCJpYXQiOjE3MjIwOTgxOTEsImp0aSI6ImNkNDgxMGQ0YzFmZDQ1NGRiZGQzN2VmNTI0MGMwMDYwIiwidXNlcl9pZCI6Mn0.gJR1udVqiiNSHpFAeT1dTml_04yXOiPwXLFsYqANPt0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"current_password\": \"Calebkumu@79\",\r\n    \"new_password\": \"Kumuthan@2024\",\r\n    \"confirm_password\": \"Kumuthan@2024\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/change_password",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"change_password"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Books",
+					"item": [
+						{
+							"name": "Create Book",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Help",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Very important",
+											"type": "text"
+										},
+										{
+											"key": "additional_details",
+											"value": "Everone needs to study",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/C:/Users/sothi/Pictures/100APPLE/DTDK8484.JPG"
+										},
+										{
+											"key": "availability",
+											"value": "in stock",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/books",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"books"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Books",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/books?name=",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"books"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve Book",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/books/4",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"books",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Book",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Maths",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "100",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Very important",
+											"type": "text"
+										},
+										{
+											"key": "additional_details",
+											"value": "Everone needs to study",
+											"type": "text"
+										},
+										{
+											"key": "availability",
+											"value": "in stock",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/C:/Users/sothi/Pictures/100APPLE/BKOK9435.JPG"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/books/4",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"books",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Book",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMjAyMjE1LCJpYXQiOjE3MjExOTUwMTUsImp0aSI6IjU3YmRjZGE0M2E3NzQ0NzdiMWQ4MDkzMDllNDU4MGM4IiwidXNlcl9pZCI6MX0.bXff2q7iotfGfWUvrUO1FLClV8ldlr7P-VTZlMNTSwg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/books/2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"books",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "MultiDelete Books",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ids\": [3, 4]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/books",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"books"
+									]
+								},
+								"description": "### Delete Books\n\nThis endpoint is used to delete one or more books from the admin panel.\n\n#### Request Body\n\n- raw (application/json)\n    - ids (array): An array of book IDs to be deleted.\n        \n\n#### Response\n\nThe response for this request is a JSON schema. It will include the properties and data types for the response body, which will be useful for validating the response structure."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Materials",
+					"item": [
+						{
+							"name": "Create Material",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "kidney",
+											"type": "text"
+										},
+										{
+											"key": "type",
+											"value": "gift",
+											"type": "text"
+										},
+										{
+											"key": "supplier_name",
+											"value": "god",
+											"type": "text"
+										},
+										{
+											"key": "supplier_phone_no",
+											"value": "9361466402",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "discount_percentage",
+											"value": "100",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "fear of god",
+											"type": "text"
+										},
+										{
+											"key": "availability",
+											"value": "in stock",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Very important",
+											"type": "text"
+										},
+										{
+											"key": "overview",
+											"value": "fear of god is the begining of wisdom",
+											"type": "text"
+										},
+										{
+											"key": "additional_details",
+											"value": "Everone needs to know",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/C:/Users/sothi/Pictures/100APPLE/HHSF4930.JPG"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/materials",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"materials"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Materials",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/materials",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"materials"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve Material",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/materials/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"materials",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Material",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "brain",
+											"type": "text"
+										},
+										{
+											"key": "type",
+											"value": "gift",
+											"type": "text"
+										},
+										{
+											"key": "supplier_name",
+											"value": "god",
+											"type": "text"
+										},
+										{
+											"key": "supplier_phone_no",
+											"value": "7777777777",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "discount_percentage",
+											"value": "100",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "fear of god",
+											"type": "text"
+										},
+										{
+											"key": "availability",
+											"value": "out of stock",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Very important",
+											"type": "text"
+										},
+										{
+											"key": "overview",
+											"value": "fear of god is the begining of wisdom",
+											"type": "text"
+										},
+										{
+											"key": "additional_details",
+											"value": "Everone needs to know",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/C:/Users/sothi/Pictures/100APPLE/IMG_0004.JPG"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/materials/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"materials",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Material",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/materials/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"materials",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "MultiDelete Materials",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ids\": [2]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/materials",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"materials"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Events",
+					"item": [
+						{
+							"name": "Create Event",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "mega exhibition",
+											"type": "text"
+										},
+										{
+											"key": "date",
+											"value": "2024-08-02",
+											"type": "text"
+										},
+										{
+											"key": "location",
+											"value": "Chennai",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "mega",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/C:/Users/sothi/Pictures/100APPLE/HOCT2860.JPG"
+										},
+										{
+											"key": "additional_informations",
+											"value": "super",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/events",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"events"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Events",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/events?search=mega",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"events"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "mega"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve Event",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/events/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"events",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Event",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "mega exchibition",
+											"type": "text"
+										},
+										{
+											"key": "date",
+											"value": "2024-07-17",
+											"type": "text"
+										},
+										{
+											"key": "location",
+											"value": "Chennai",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "mega",
+											"type": "text"
+										},
+										{
+											"key": "additional_informations",
+											"value": "worst",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/C:/Users/sothi/Pictures/100APPLE/BKOK9435.JPG"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/events/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"events",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Event",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/events/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"events",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "MultiDelete Event",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ids\": [2]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/events",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"events"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Transactions",
+					"item": [
+						{
+							"name": "Create Transaction",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxODEwMDM0LCJpYXQiOjE3MjE4MDI4MzQsImp0aSI6IjY3MDNhZGEzY2JmMTQ3YWQ4YzE5OTdjOGE3MzQ1YTEwIiwidXNlcl9pZCI6MX0.v64Aj9OiBdIHMY35VHB5JmQgxMF6AeHHL47MBer1oaI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"user_involved\":\"Frederick\",\r\n    \"type\":\"payment\",\r\n    \"amount\":\"30000\",\r\n    \"status\":\"completed\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/transactions",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"transactions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Transaction",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMjk0MDg2LCJpYXQiOjE3MjEyODY4ODYsImp0aSI6ImM2YzNhNWQzMmJjYjRiMDk4ODdkYWQ5OTM0MjU5MTI3IiwidXNlcl9pZCI6MX0.mU-0xZJsT0HkoayoYg5XqnSFWJZlO-cRJ1ERTRe2quk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/transactions",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"transactions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Transaction",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMjk0MDg2LCJpYXQiOjE3MjEyODY4ODYsImp0aSI6ImM2YzNhNWQzMmJjYjRiMDk4ODdkYWQ5OTM0MjU5MTI3IiwidXNlcl9pZCI6MX0.mU-0xZJsT0HkoayoYg5XqnSFWJZlO-cRJ1ERTRe2quk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ids\": [1]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/transactions",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"transactions"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Dashboard",
+					"item": [
+						{
+							"name": "Key Matrix Statistics",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxNTUyNTQ4LCJpYXQiOjE3MjE1NDUzNDgsImp0aSI6ImRhZjQ3MTEzYTk3NTQ0OWRhMjdhNGI4M2M5ZGU4NTk1IiwidXNlcl9pZCI6MX0.5H7lSSI0DR1AsSYI4E2wfITYCH6BgxfQvQluCMA94u4",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/dashboard/key_matrix_statistics",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"dashboard",
+										"key_matrix_statistics"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Professionals Growth Chart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxODAyNDY3LCJpYXQiOjE3MjE3OTUyNjcsImp0aSI6IjJkNzc5ODg3MTVjNjRkOTBiMGE4NzAxMjdmYjIzMWRjIiwidXNlcl9pZCI6MX0.fu_WWUEBsZvcBA2wyJTKs6beUkrzXs_QXy-V7BAV8cM",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/dashboard/professionals_growth_chart?months=6",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"dashboard",
+										"professionals_growth_chart"
+									],
+									"query": [
+										{
+											"key": "months",
+											"value": "6"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Revenue Growth Chart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxNTY4MzYyLCJpYXQiOjE3MjE1NjExNjIsImp0aSI6IjgyNmEyYzZlZDdhMDQzMTliM2MwZjA2NGYyNzZiMGFiIiwidXNlcl9pZCI6MX0.H0VZNICng4ZCzWRvG7HYybOF1lpiqNF_L9P44lx8Uvw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/dashboard/revenue_growth_chart?periods=monthly",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"dashboard",
+										"revenue_growth_chart"
+									],
+									"query": [
+										{
+											"key": "periods",
+											"value": "monthly"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Activity Timeline",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxODAyNDY3LCJpYXQiOjE3MjE3OTUyNjcsImp0aSI6IjJkNzc5ODg3MTVjNjRkOTBiMGE4NzAxMjdmYjIzMWRjIiwidXNlcl9pZCI6MX0.fu_WWUEBsZvcBA2wyJTKs6beUkrzXs_QXy-V7BAV8cM",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/dashboard/activity_timeline",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"dashboard",
+										"activity_timeline"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Notifications",
+					"item": [
+						{
+							"name": "Create Notifications",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxNzQyMDUxLCJpYXQiOjE3MjE3MzQ4NTEsImp0aSI6IjI3MmEyZDI4NWE3NzQwOTBiNTYwNTkyYTMyOWYxZjQxIiwidXNlcl9pZCI6MX0.1AXvPYh7_mXWdJH223Lm3nNGWVuvFN9J8RmqtUxFiTg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Mass thalaiva nee",
+											"type": "text"
+										},
+										{
+											"key": "text",
+											"value": "Test2",
+											"type": "text"
+										},
+										{
+											"key": "recipient",
+											"value": "all users",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/C:/Users/TECQNIO/Pictures/Saved Pictures/Handy_Login.PNG"
+										},
+										{
+											"key": "status",
+											"value": "sent",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/notifications",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"notifications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Notifications",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxNzQyMDUxLCJpYXQiOjE3MjE3MzQ4NTEsImp0aSI6IjI3MmEyZDI4NWE3NzQwOTBiNTYwNTkyYTMyOWYxZjQxIiwidXNlcl9pZCI6MX0.1AXvPYh7_mXWdJH223Lm3nNGWVuvFN9J8RmqtUxFiTg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/notifications",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"notifications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve Notifications",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxNzQyMDUxLCJpYXQiOjE3MjE3MzQ4NTEsImp0aSI6IjI3MmEyZDI4NWE3NzQwOTBiNTYwNTkyYTMyOWYxZjQxIiwidXNlcl9pZCI6MX0.1AXvPYh7_mXWdJH223Lm3nNGWVuvFN9J8RmqtUxFiTg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/notifications/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"notifications",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Notifications",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxNzQyMDUxLCJpYXQiOjE3MjE3MzQ4NTEsImp0aSI6IjI3MmEyZDI4NWE3NzQwOTBiNTYwNTkyYTMyOWYxZjQxIiwidXNlcl9pZCI6MX0.1AXvPYh7_mXWdJH223Lm3nNGWVuvFN9J8RmqtUxFiTg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"recipient\": \"all users\",\r\n    \"title\": \"Updated\",\r\n    \"text\": \"Test1\",\r\n    \"status\": \"sent\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/admin/notifications/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"admin",
+										"notifications",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Mobile Application",
+			"item": [
+				{
+					"name": "User Management",
+					"item": [
+						{
+							"name": "Register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"first_name\": \"Kumuthan\",\r\n    \"last_name\": \"Sothinayagam\",\r\n    \"email\": \"kumuthan@gmail.com\",\r\n    \"phone_no\": \"9361466402\",\r\n    \"password\": \"Calebkumu@79\",\r\n    \"fcm_token\":\"fzgdmIOlQX2iGWIWkSuPmX:APA91bHjmTS-7OdYWWcqmaYERBXJeD4TMo5tl1jWUFiYLz2O6vn6lrBadtv7MtXqy7WvixdO7AcORE1vqdpUa8--tawp8xoNR441mDrHGpwG1yz3i8a6N3LjJhnVaQ9TDCX4WXMCBBAb\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/user/register",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"user",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get OTP",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phone_no\": \"9361466402\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/user/getotp",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"user",
+										"getotp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify OTP",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "phone_no",
+											"value": "8098536068",
+											"type": "text"
+										},
+										{
+											"key": "otp",
+											"value": "2332",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/user/validate_otp",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"user",
+										"validate_otp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIwNTE4NDc5LCJpYXQiOjE3MjA1MTEyNzksImp0aSI6ImY0MGMzOTEwZTcyNTQ0M2Q5NDZmYzVmY2E0NmQ2NzE0IiwidXNlcl9pZCI6MX0.V30kxSgzyV6rqVPrdbgDD5ihQ12Wkqu40JbiTTsY7Hk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyMTExNjA3OSwiaWF0IjoxNzIwNTExMjc5LCJqdGkiOiJmOThkMTllYTU3Y2Q0ZjFjYjM5ZmQ3MDAwZjUzNzNkMCIsInVzZXJfaWQiOjF9.N8K3XKFXREVjRdLnmtS5QbUQmNgNQwGGhAgfZUtLlEM\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/user/logout",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"user",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Refresh",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIwNTE4NDc5LCJpYXQiOjE3MjA1MTEyNzksImp0aSI6ImY0MGMzOTEwZTcyNTQ0M2Q5NDZmYzVmY2E0NmQ2NzE0IiwidXNlcl9pZCI6MX0.V30kxSgzyV6rqVPrdbgDD5ihQ12Wkqu40JbiTTsY7Hk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyMTExNjA3OSwiaWF0IjoxNzIwNTExMjc5LCJqdGkiOiJmOThkMTllYTU3Y2Q0ZjFjYjM5ZmQ3MDAwZjUzNzNkMCIsInVzZXJfaWQiOjF9.N8K3XKFXREVjRdLnmtS5QbUQmNgNQwGGhAgfZUtLlEM\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/user/refresh",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"user",
+										"refresh"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Professionals",
+					"item": [
+						{
+							"name": "Create Review",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIwNjgyMjkyLCJpYXQiOjE3MjA2NzUwOTIsImp0aSI6ImY3YmM2ZmQ5MDMxNzRmMjdhYWM1ODQ1ZWFkODYxYzUzIiwidXNlcl9pZCI6MX0.CYLc5pPIaxFSJyc_trPeawae-0euV9oQwIfezZwzeP0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"proffessional\": 2, //id of the Professional\r\n    \"rating\": 1,\r\n    \"comment\": \"Very Good\" \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/user/professional/review",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"user",
+										"professional",
+										"review"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "access",
+			"value": "eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIyMTQ5Nzk2LCJpYXQiOjE3MjIxNDI1OTYsImp0aSI6ImFhOTE1OTdjZTg5MzRiOTFiZjdiZGM5ZGVkZWE5Mjc2IiwidXNlcl9pZCI6Mn0"
+		}
+	]
+}
